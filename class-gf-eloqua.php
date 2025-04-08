@@ -66,11 +66,36 @@ class GF_Eloqua extends GFAddOn
    */
   protected $_title = 'Gravity Forms Eloqua Add-On';
 
+  /**
+   * Eloqua Add-On Short Title
+   *
+   * @var string
+   */
   protected $_short_title = 'Eloqua';
 
+  /**
+   * Eloqua i18n domain
+   *
+   * @var string
+   */
   private static $_domain = 'gravityformseloqua';
 
+  /**
+   * Eloqua default language
+   *
+   * @var string
+   */
   private static $_default_language = 'fr';
+
+  /**
+   * Eloqua languages references
+   *
+   * @var array
+   */
+  private static $_languages = array(
+    'fr' => 'LANGUE_A',
+    'en' => 'LANGUE_B'
+  );
 
   /**
    * Get an instance of this class.
@@ -114,13 +139,13 @@ class GF_Eloqua extends GFAddOn
   {
     return array(
       array(
-        'title'  => esc_html__('Simple Form Settings', self::$_domain),
+        'title'  => esc_html__('Eloqua form data settings', self::$_domain),
         'fields' => array(
           [
             'name' => 'enabled',
             'type' => 'checkbox',
-            'label' => 'Submit data to Eloqua API ?',
-            'tooltip' => 'Determine if the Eloqua Add-On is enabled for this form.',
+            'label' => __('Submit data to Eloqua API ?', self::$_domain),
+            'tooltip' => __('Determine if the Eloqua Add-On is enabled for this form.', self::$_domain),
             'choices' => array(
               array(
                 'label' => esc_html__('Enabled', self::$_domain),
@@ -131,26 +156,26 @@ class GF_Eloqua extends GFAddOn
           [
             'name' => 'eloqua_api_url',
             'type' => 'text',
-            'label' => 'Eloqua API Endpoint URL',
-            'tooltip' => 'Eloqua API Endpoint URL, example : https://tracking.info.xxx.com/e/f2?LP=199'
+            'label' => __('Eloqua API URL', self::$_domain),
+            'tooltip' => __('Eloqua API Endpoint URL, example : https://tracking.info.xxx.com/e/f2?LP=199', self::$_domain),
           ],
           [
             'name' => 'eloqua_site_id',
             'type' => 'text',
-            'tooltip' => 'Eloqua Site ID, example : 956780691',
-            'label' => 'Eloqua Site ID'
+            'label' => __('Eloqua Site ID', self::$_domain),
+            'tooltip' => __('Eloqua Site ID, example : 956780691', self::$_domain)
           ],
           [
             'name' => 'eloqua_campaign_id',
             'type' => 'text',
-            'tooltip' => 'Eloqua Campaign ID, example : fall-2025',
-            'label' => 'Eloqua Campaign ID'
+            'label' => __('Eloqua Campaign ID', self::$_domain),
+            'tooltip' => __('Eloqua Campaign ID, example : fall-2025', self::$_domain)
           ],
           [
             'name' => 'eloqua_form_name',
             'type' => 'text',
-            'tooltip' => 'Eloqua Form Name, example: CLIENT-webinars-IDXXX',
-            'label' => 'Eloqua Form Name'
+            'label' => __('Eloqua Form Name', self::$_domain),
+            'tooltip' => __('Eloqua Form Name, example: CLIENT-webinars-IDXXX', self::$_domain),
           ]
         )
       )
@@ -209,14 +234,17 @@ class GF_Eloqua extends GFAddOn
     // if the form is not enabled, return
     if ($this->is_enabled($form_id) == false) return;
 
+    $label = esc_html__('Eloqua Field', self::$_domain);
+    $aria_label = esc_html__('Copy form ID here to map the field in Eloqua.', self::$_domain);
+
     if ($position == 25) {
       echo <<<HTML
         <li class="eloqua-field field_setting">
           <label for="eloqua_field_value" class="section_label">
-            Eloqua Field
+            {$label}
             <button onclick="return false;" onkeypress="return false;"
               class="gf_tooltip tooltip tooltip_eloqua_field_tooltip"
-              aria-label="<h6>Eloqua</h6>Copy form ID here to map the field in Eloqua.">
+              aria-label="{$aria_label}">
               <i class="gform-icon gform-icon--question-mark" aria-hidden="true"></i>
             </button>
           </label>
@@ -237,7 +265,7 @@ class GF_Eloqua extends GFAddOn
   public function gform_editor_js()
   {
     // if the form is not enabled, return
-    if ($this->is_enabled(rgget('id')) == false) return;
+    if ($this->is_enabled( rgget('id') ) == false) return;
 
     echo <<<HTML
       <script type='text/javascript'>
@@ -289,8 +317,8 @@ class GF_Eloqua extends GFAddOn
     $body_data = array(
         'elqFormName' => $settings['eloqua_form_name'],
         'elqSiteId' => $settings['eloqua_site_id'],
-        'varsLangue' => $this->get_current_language() == 'fr' ? 'LANGUE_A' : 'LANGUE_B',
-        'elq_gf_input_lang' => $this->get_current_language() == 'fr' ? 'LANGUE_A' : 'LANGUE_B'
+        'varsLangue' => self::$_languages[$this->get_current_language()],
+        'elq_gf_input_lang' => self::$_languages[$this->get_current_language()]
     );
 
     foreach ($form['fields'] as $field) {
