@@ -114,6 +114,20 @@ class GF_Eloqua extends GFAddOn
   }
 
   /**
+   * Eloqua init
+   *
+   * @since  0.0.1
+   * @access public
+   *
+   * return void
+   */
+  public function init()
+  {
+    parent::init();
+    add_filter('gform_after_submission', array($this, 'gform_after_submission'), 10, 2);
+  }
+
+  /**
    * Eloqua init_admin
    *
    * @since  0.0.1
@@ -126,7 +140,6 @@ class GF_Eloqua extends GFAddOn
     parent::init_admin();
     add_action('gform_field_standard_settings', array($this, 'gform_field_standard_settings'), 10, 2);
     add_action('gform_editor_js', array($this, 'gform_editor_js'));
-    add_filter('gform_after_submission', array($this, 'gform_after_submission'), 10, 2);
   }
 
   /**
