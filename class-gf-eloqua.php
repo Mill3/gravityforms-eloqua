@@ -105,7 +105,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return GF_Eloqua
    */
-  public static function get_instance()
+  public static function get_instance(): GF_Eloqua
   {
     if (null === self::$_instance) {
       self::$_instance = new self;
@@ -121,7 +121,7 @@ class GF_Eloqua extends GFAddOn
    *
    * return void
    */
-  public function init()
+  public function init(): void
   {
     parent::init();
     add_filter('gform_after_submission', array($this, 'gform_after_submission'), 10, 2);
@@ -135,7 +135,7 @@ class GF_Eloqua extends GFAddOn
    *
    * return void
    */
-  public function init_admin()
+  public function init_admin(): void
   {
     parent::init_admin();
     add_action('gform_field_standard_settings', array($this, 'gform_field_standard_settings'), 10, 2);
@@ -147,7 +147,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return array
    */
-  public function form_settings_fields($form)
+  public function form_settings_fields($form): array
   {
     return array(
       array(
@@ -206,7 +206,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return string
    */
-  public function get_menu_icon()
+  public function get_menu_icon(): string
   {
     return $this->is_gravityforms_supported($this->_min_gravityforms_version) ? 'gform-icon--api' : 'dashicons-admin-generic';
   }
@@ -219,7 +219,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return void
    */
-  public function styles()
+  public function styles(): array
   {
     $styles = array(
       array(
@@ -246,7 +246,8 @@ class GF_Eloqua extends GFAddOn
    *
    * @return void
    */
-  public function scripts() {
+  public function scripts(): array
+  {
     $scripts = array(
       array(
         'handle'  => 'gravityforms_eloqua_form_settings',
@@ -272,7 +273,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return string
    */
-  public function gform_field_standard_settings($position, $form_id = 0)
+  public function gform_field_standard_settings(int $position, int $form_id = 0): void
   {
     // if the form is not enabled, return
     if ($this->is_enabled($form_id) == false) return;
@@ -305,7 +306,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return string
    */
-  public function gform_editor_js()
+  public function gform_editor_js(): void
   {
     // if the form is not enabled, return
     if ($this->is_enabled( rgget('id') ) == false) return;
@@ -336,7 +337,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return void
    */
-  public function gform_after_submission($entry, $form)
+  public function gform_after_submission(array $entry, array $form): void
   {
     if ($this->is_enabled($form['id']) == false) return;
 
@@ -407,7 +408,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return boolean
    */
-  private function is_enabled($form_id)
+  private function is_enabled(int $form_id): bool
   {
     $form = GFAPI::get_form($form_id);
 
@@ -427,7 +428,8 @@ class GF_Eloqua extends GFAddOn
    *
    * @return string
    */
-  private function get_current_language() {
+  private function get_current_language(): string
+  {
     if( function_exists('pll_current_language') ) {
         return pll_current_language();
     } else {

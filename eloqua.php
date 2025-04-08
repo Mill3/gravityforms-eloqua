@@ -4,7 +4,7 @@
 Plugin Name: Gravity Forms Eloqua Add-On
 Plugin URI: https://gravityforms.com
 Description: Integrates Gravity Forms with Eloqua.
-Version: 0.0.2
+Version: 0.0.3
 Author: MILL3 Studio
 Author URI: https://mill3.studio
 License: GPL-2.0+
@@ -17,7 +17,7 @@ if (! defined('ABSPATH')) {
   die();
 }
 
-define('GF_ELOQUA_VERSION', '0.0.2');
+define('GF_ELOQUA_VERSION', '0.0.3');
 
 // If Gravity Forms is loaded, bootstrap the Eloqua Add-On.
 add_action('gform_loaded', array('GF_Eloqua_Bootstrap', 'load'), 5);
