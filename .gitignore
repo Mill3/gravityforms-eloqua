@@ -1,0 +1,13 @@
+vendor
+node_modules
+
+# OS files
+.tm_properties
+.DS_Store
+.AppleDouble
+.AppleTemp*
+:2e*
+._*
+*~
+.nfs*
+
