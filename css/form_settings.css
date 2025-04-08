@@ -1,1 +1,8 @@
-/* EMPTY FOR NOW */
+/* hide all fields by default except the first checkbox field (Enabled) */
+.gform-settings-field:not(:has(#gform-settings-checkbox-choice-eloqua_enabled)) {
+  display: none;
+}
+
+#gform-settings-section-eloqua-form-data-settings:has(.gform-settings-field__checkbox input:checked) .gform-settings-field {
+  display: block;
+}

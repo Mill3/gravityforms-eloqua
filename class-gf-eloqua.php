@@ -110,21 +110,20 @@ class GF_Eloqua extends GFAddOn
     if (null === self::$_instance) {
       self::$_instance = new self;
     }
-
     return self::$_instance;
   }
 
   /**
-   * Eloqua init
+   * Eloqua init_admin
    *
    * @since  0.0.1
    * @access public
    *
    * return void
    */
-  public function init()
+  public function init_admin()
   {
-    parent::init();
+    parent::init_admin();
     add_action('gform_field_standard_settings', array($this, 'gform_field_standard_settings'), 10, 2);
     add_action('gform_editor_js', array($this, 'gform_editor_js'));
     add_filter('gform_after_submission', array($this, 'gform_after_submission'), 10, 2);
@@ -155,27 +154,32 @@ class GF_Eloqua extends GFAddOn
           ],
           [
             'name' => 'eloqua_api_url',
+            'icon' => 'gform-icon--choice',
             'type' => 'text',
             'label' => __('Eloqua API URL', self::$_domain),
-            'tooltip' => __('Eloqua API Endpoint URL, example : https://tracking.info.xxx.com/e/f2?LP=199', self::$_domain),
+            'tooltip' => __('Eloqua API Endpoint URL, example : https://tracking.info.xxx.com/e/f2?LP=XXX', self::$_domain),
+            'required' => false,
           ],
           [
             'name' => 'eloqua_site_id',
             'type' => 'text',
             'label' => __('Eloqua Site ID', self::$_domain),
-            'tooltip' => __('Eloqua Site ID, example : 956780691', self::$_domain)
+            'tooltip' => __('Eloqua Site ID, example : 956780691', self::$_domain),
+            'required' => false,
           ],
           [
             'name' => 'eloqua_campaign_id',
             'type' => 'text',
             'label' => __('Eloqua Campaign ID', self::$_domain),
-            'tooltip' => __('Eloqua Campaign ID, example : fall-2025', self::$_domain)
+            'tooltip' => __('Eloqua Campaign ID, example : fall-2025', self::$_domain),
+            'required' => false,
           ],
           [
             'name' => 'eloqua_form_name',
             'type' => 'text',
             'label' => __('Eloqua Form Name', self::$_domain),
             'tooltip' => __('Eloqua Form Name, example: CLIENT-webinars-IDXXX', self::$_domain),
+            'required' => false,
           ]
         )
       )
@@ -219,6 +223,32 @@ class GF_Eloqua extends GFAddOn
     );
 
     return array_merge(parent::styles(), $styles);
+  }
+
+  /**
+   * Register needed scripts.
+   *
+   * @since  0.0.1
+   * @access public
+   *
+   * @return void
+   */
+  public function scripts() {
+    $scripts = array(
+      array(
+        'handle'  => 'gravityforms_eloqua_form_settings',
+        'src'     => $this->get_base_url() . "/js/eloqua-gf-settings.js",
+        'version' => $this->_version,
+        'enqueue' => array(
+          array(
+            'admin_page' => array('plugin_settings', 'form_settings'),
+            'tab'        => $this->_slug,
+          ),
+        ),
+      ),
+    );
+
+    return array_merge(parent::scripts(), $scripts);
   }
 
   /**
