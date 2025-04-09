@@ -1,4 +1,10 @@
+# Gravity Forms - Eloqua addon
 
+This addon plugin allow a form to post-submit mapped fields to an Eloqua form.
+
+![Image](https://github.com/user-attachments/assets/205c44d2-bc88-400e-8a8c-28b2cf7ff305)
+
+![Image](https://github.com/user-attachments/assets/f66e2f31-07ba-470d-be61-ef2989c98d9e)
 
 ## Versions history
 
