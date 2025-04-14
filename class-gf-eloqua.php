@@ -177,21 +177,35 @@ class GF_Eloqua extends GFAddOn
             'name' => 'eloqua_site_id',
             'type' => 'text',
             'label' => __('Eloqua Site ID', self::$_domain),
-            'tooltip' => __('Eloqua Site ID, example : 956780691', self::$_domain),
+            'tooltip' => __('Eloqua Site ID (elqSiteId), example : 956780691', self::$_domain),
             'required' => false,
           ],
           [
             'name' => 'eloqua_campaign_id',
             'type' => 'text',
             'label' => __('Eloqua Campaign ID', self::$_domain),
-            'tooltip' => __('Eloqua Campaign ID, example : fall-2025', self::$_domain),
+            'tooltip' => __('Eloqua Campaign ID (elqCampaignId), example : fall-2025', self::$_domain),
             'required' => false,
           ],
           [
             'name' => 'eloqua_form_name',
             'type' => 'text',
             'label' => __('Eloqua Form Name', self::$_domain),
-            'tooltip' => __('Eloqua Form Name, example: CLIENT-webinars-IDXXX', self::$_domain),
+            'tooltip' => __('Eloqua Form Name (elqFormName), example: CLIENT-webinars-IDXXX', self::$_domain),
+            'required' => false,
+          ],
+          [
+            'name' => 'eloqua_date',
+            'type' => 'text',
+            'label' => __('Eloqua Date', self::$_domain),
+            'tooltip' => __('VARS event date in Eloqua (varsWebinaireDate)', self::$_domain),
+            'required' => false,
+          ],
+          [
+            'name' => 'eloqua_event_title',
+            'type' => 'text',
+            'label' => __('Eloqua event title', self::$_domain),
+            'tooltip' => __('VARS event title in Eloqua (varsWebinaireTitre)', self::$_domain),
             'required' => false,
           ]
         )
@@ -347,6 +361,8 @@ class GF_Eloqua extends GFAddOn
     GFCommon::log_debug('gform_after_submission: eloqua_api_url => ' . $settings['eloqua_api_url']);
     GFCommon::log_debug('gform_after_submission: eloqua_site_id => ' . $settings['eloqua_site_id']);
     GFCommon::log_debug('gform_after_submission: eloqua_campaign_id => ' . $settings['eloqua_campaign_id']);
+    GFCommon::log_debug('gform_after_submission: eloqua_date => ' . $settings['eloqua_date']);
+    GFCommon::log_debug('gform_after_submission: eloqua_event_title => ' . $settings['eloqua_event_title']);
     GFCommon::log_debug('gform_after_submission: eloqua_form_name => ' . $settings['eloqua_form_name']);
 
     // grab Eloqua API URL from form settings
@@ -361,6 +377,9 @@ class GF_Eloqua extends GFAddOn
     $body_data = array(
         'elqFormName' => $settings['eloqua_form_name'],
         'elqSiteId' => $settings['eloqua_site_id'],
+        'elqCampaignId' => $settings['eloqua_campaign_id'],
+        'varsWebinaireDate' => $settings['eloqua_date'],
+        'varsWebinaireTitre' => $settings['eloqua_event_title'],
         'varsLangue' => self::$_languages[$this->get_current_language()],
         'elq_gf_input_lang' => self::$_languages[$this->get_current_language()]
     );
@@ -408,7 +427,7 @@ class GF_Eloqua extends GFAddOn
    *
    * @return boolean
    */
-  private function is_enabled(int $form_id): bool
+  private function is_enabled(int | string $form_id): bool
   {
     $form = GFAPI::get_form($form_id);
 
