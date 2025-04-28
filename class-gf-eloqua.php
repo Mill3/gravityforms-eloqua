@@ -358,15 +358,15 @@ class GF_Eloqua extends GFAddOn
     $settings = $this->get_form_settings($form);
 
     // log to debug information
-    GFCommon::log_debug('gform_after_submission: eloqua_api_url => ' . $settings['eloqua_api_url']);
-    GFCommon::log_debug('gform_after_submission: eloqua_site_id => ' . $settings['eloqua_site_id']);
-    GFCommon::log_debug('gform_after_submission: eloqua_campaign_id => ' . $settings['eloqua_campaign_id']);
-    GFCommon::log_debug('gform_after_submission: eloqua_date => ' . $settings['eloqua_date']);
-    GFCommon::log_debug('gform_after_submission: eloqua_event_title => ' . $settings['eloqua_event_title']);
-    GFCommon::log_debug('gform_after_submission: eloqua_form_name => ' . $settings['eloqua_form_name']);
+    GFCommon::log_debug('gform_after_submission: eloqua_api_url => ' . rgar($settings, 'eloqua_api_url'));
+    GFCommon::log_debug('gform_after_submission: eloqua_site_id => ' . rgar($settings, 'eloqua_site_id'));
+    GFCommon::log_debug('gform_after_submission: eloqua_campaign_id => ' . rgar($settings, 'eloqua_campaign_id'));
+    GFCommon::log_debug('gform_after_submission: eloqua_date => ' . rgar($settings, 'eloqua_date'));
+    GFCommon::log_debug('gform_after_submission: eloqua_event_title => ' . rgar($settings, 'eloqua_event_title'));
+    GFCommon::log_debug('gform_after_submission: eloqua_form_name => ' . rgar($settings, 'eloqua_form_name'));
 
     // grab Eloqua API URL from form settings
-    $endpoint_url = $settings['eloqua_api_url'];
+    $endpoint_url = rgar($settings, 'eloqua_api_url');
 
     if (empty($endpoint_url)) {
         GFCommon::log_debug('gform_after_submission: Eloqua API URL is empty, cannot send data');
@@ -375,11 +375,11 @@ class GF_Eloqua extends GFAddOn
 
     // set the body data basic information
     $body_data = array(
-        'elqFormName' => $settings['eloqua_form_name'],
-        'elqSiteId' => $settings['eloqua_site_id'],
-        'elqCampaignId' => $settings['eloqua_campaign_id'],
-        'varsWebinaireDate' => $settings['eloqua_date'],
-        'varsWebinaireTitre' => $settings['eloqua_event_title'],
+        'elqFormName' => rgar($settings, 'eloqua_form_name'),
+        'elqSiteId' => rgar($settings, 'eloqua_site_id'),
+        'elqCampaignId' => rgar($settings, 'eloqua_campaign_id'),
+        'varsWebinaireDate' => rgar($settings, 'eloqua_date'),
+        'varsWebinaireTitre' => rgar($settings, 'eloqua_event_title'),
         'varsLangue' => self::$_languages[$this->get_current_language()],
         'elq_gf_input_lang' => self::$_languages[$this->get_current_language()]
     );
@@ -417,7 +417,7 @@ class GF_Eloqua extends GFAddOn
 
     $response = wp_remote_post($endpoint_url, $options);
 
-    GFCommon::log_debug('gform_after_submission: response => ' . print_r($response, true));
+    // GFCommon::log_debug('gform_after_submission: response => ' . print_r($response, true));
   }
 
   /**
